@@ -6,7 +6,19 @@
     <Nullable>enable</Nullable>
     <Title>Resilient Flurl</Title>
     <Description>Add resilience pipeline to Flurl clients</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/rcarubbi/carubbi.resilientflurl</RepositoryUrl>
+    <PackageTags>Resilience;Flurl;HttpClient;Polly</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Flurl.Http" Version="4.0.2" />
