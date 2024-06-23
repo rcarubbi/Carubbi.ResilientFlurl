@@ -1,28 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <Title>Resilient Flurl</Title>
-    <Description>Add resilience pipeline to Flurl clients</Description>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/rcarubbi/carubbi.resilientflurl</RepositoryUrl>
-    <PackageTags>Resilience;Flurl;HttpClient;Polly</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Title>Resilient Flurl</Title>
+		<Description>Add resilience pipeline to Flurl clients</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/rcarubbi/carubbi.resilientflurl</RepositoryUrl>
+		<PackageTags>Resilience;Flurl;HttpClient;Polly</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Authors>Raphael Carubbi Neto</Authors>
+		<Version>1.1.0</Version>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Flurl.Http" Version="4.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.6.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Flurl.Http" Version="4.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.6.0" />
+	</ItemGroup>
 
 </Project>
