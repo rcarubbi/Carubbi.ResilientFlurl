@@ -6,7 +6,6 @@ public class HttpClientOptions
 
     public bool UseStandardResiliencePipeline { get; set; }
 
-    public bool LoggingEnabled { get; set; }
 
     public ResiliencePipelinePolicyOptions[] CustomResiliencePipeline { get; set; } = [];
 }
