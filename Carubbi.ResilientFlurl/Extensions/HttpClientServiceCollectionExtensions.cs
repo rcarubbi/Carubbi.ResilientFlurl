@@ -8,6 +8,7 @@ using Polly;
 using Polly.CircuitBreaker;
 using Polly.Retry;
 using Polly.Timeout;
+using System.Net;
 using System.Threading.RateLimiting;
 
 namespace Carubbi.ResilientFlurl.Extensions;
@@ -101,11 +102,15 @@ public static class HttpClientServiceCollectionExtensions
             SamplingDuration = TimeSpan.FromSeconds(samplingDurationInSeconds),
             BreakDuration = TimeSpan.FromSeconds(durationInSeconds),
             MinimumThroughput = minimumThroughput,
+            ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+            .Handle<TimeoutRejectedException>()
+            .Handle<HttpRequestException>()
+            .HandleResult(response => response.StatusCode == HttpStatusCode.InternalServerError),
             OnClosed = (args) =>
-            {
-                logger.LogWarning(args.Outcome.Exception, "Circuit breaker closed on {policyName}", name);
-                return ValueTask.CompletedTask;
-            },
+                {
+                    logger.LogWarning(args.Outcome.Exception, "Circuit breaker closed on {policyName}", name);
+                    return ValueTask.CompletedTask;
+                },
             OnHalfOpened = (args) =>
             {
                 logger.LogInformation("Circuit breaker half-opened on {policyName}", name);
@@ -129,6 +134,10 @@ public static class HttpClientServiceCollectionExtensions
             Delay = TimeSpan.FromSeconds(delayInSeconds),
             BackoffType = backoffType,
             MaxDelay = TimeSpan.FromSeconds(maxDelayInSeconds),
+            ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+            .Handle<TimeoutRejectedException>()
+            .Handle<HttpRequestException>()
+            .HandleResult(response => response.StatusCode == HttpStatusCode.InternalServerError)
         };
     }
 
