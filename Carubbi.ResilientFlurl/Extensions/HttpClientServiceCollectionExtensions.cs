@@ -15,7 +15,7 @@ namespace Carubbi.ResilientFlurl.Extensions;
 
 public static class HttpClientServiceCollectionExtensions
 {
-    public static IServiceCollection AddResilientHttpClient<T>(this IServiceCollection services, IConfiguration configuration)
+    public static IHttpClientBuilder AddResilientHttpClient<T>(this IServiceCollection services, IConfiguration configuration)
     {
         var name = typeof(T).Name;
         services.Configure<HttpClientOptions>(name, configuration.GetSection($"{name}:HttpClient"));
@@ -59,7 +59,7 @@ public static class HttpClientServiceCollectionExtensions
         flurlClient.OnError(a => a.ExceptionHandled = true);
         services.AddKeyedSingleton<IFlurlClient>(name, flurlClient);
 
-        return services;
+        return httpClientBuilder;
     }
 
     private static ConcurrencyLimiterOptions GetConcurrenyLimiterOptions(Dictionary<string, string> policyParameters)
