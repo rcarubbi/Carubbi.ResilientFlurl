@@ -91,4 +91,4 @@ This library is licensed under the MIT License. See the LICENSE file for more de
 
 For more information and updates, visit the [Carubbi.ResilientFlurl GitHub repository](https://github.com/rcarubbi/Carubbi.ResilientFlurl).
 
-For usage example check the [demo repository](https://github.com/rcarubbi/ConsoleAppWithResilientFlurlDemo)
+For usage example check the [demo repository](https://github.com/rcarubbi/ConsoleAppsDemo)
