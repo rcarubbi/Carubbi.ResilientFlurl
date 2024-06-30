@@ -15,12 +15,20 @@ namespace Carubbi.ResilientFlurl.Extensions;
 
 public static class HttpClientServiceCollectionExtensions
 {
-    public static IHttpClientBuilder AddResilientHttpClient<T>(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddResilientHttpClient<T>(this IServiceCollection services, IConfiguration configuration, Action<IHttpClientBuilder>? configureHttpClient = null)
     {
         var name = typeof(T).Name;
         services.Configure<HttpClientOptions>(name, configuration.GetSection($"{name}:HttpClient"));
         var httpClientOptions = configuration.GetSection($"{name}:HttpClient").Get<HttpClientOptions>() ?? throw new ArgumentException("HttpClient configuration missing");
-        var httpClientBuilder = services.AddHttpClient(name, (httpClient) => { httpClient.BaseAddress = new Uri(httpClientOptions.BaseAddress); });
+        var httpClientBuilder = services.AddHttpClient(name, (httpClient) => { 
+            httpClient.BaseAddress = new Uri(httpClientOptions.BaseAddress);
+        });
+
+        if (configureHttpClient != null)
+        {
+            configureHttpClient(httpClientBuilder);
+        }
+
         if (httpClientOptions.UseStandardResiliencePipeline)
         {
             httpClientBuilder.AddStandardResilienceHandler().SelectPipelineByAuthority();
@@ -59,7 +67,7 @@ public static class HttpClientServiceCollectionExtensions
         flurlClient.OnError(a => a.ExceptionHandled = true);
         services.AddKeyedSingleton<IFlurlClient>(name, flurlClient);
 
-        return httpClientBuilder;
+        return services;
     }
 
     private static ConcurrencyLimiterOptions GetConcurrenyLimiterOptions(Dictionary<string, string> policyParameters)
