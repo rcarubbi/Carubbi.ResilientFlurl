@@ -17,7 +17,7 @@ public static class HttpClientServiceCollectionExtensions
 {
     public static IServiceCollection AddResilientHttpClient<T>(this IServiceCollection services, IConfiguration configuration, Action<IHttpClientBuilder>? configureHttpClient = null)
     {
-        var name = typeof(T).Name;
+        var name = GetGenericTypeString(typeof(T));
         services.Configure<HttpClientOptions>(name, configuration.GetSection($"{name}:HttpClient"));
         var httpClientOptions = configuration.GetSection($"{name}:HttpClient").Get<HttpClientOptions>() ?? throw new ArgumentException("HttpClient configuration missing");
         var httpClientBuilder = services.AddHttpClient(name, (httpClient) => { 
@@ -68,6 +68,23 @@ public static class HttpClientServiceCollectionExtensions
         services.AddKeyedSingleton<IFlurlClient>(name, flurlClient);
 
         return services;
+    }
+
+    public static string GetGenericTypeString(Type type)
+    {
+        if (type.IsGenericType)
+        {
+            var typeName = type.Name;
+            var genericArguments = type.GetGenericArguments();
+            var genericArgumentsString = string.Join(",", genericArguments.Select(GetGenericTypeString));
+            
+            typeName = typeName.Substring(0, typeName.IndexOf('`'));
+            return $"{typeName}<{genericArgumentsString}>";
+        }
+        else
+        {
+            return type.Name;
+        }
     }
 
     private static ConcurrencyLimiterOptions GetConcurrenyLimiterOptions(Dictionary<string, string> policyParameters)
